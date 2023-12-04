@@ -1,6 +1,9 @@
 # DAT Multi Track Player
 Music player that enables you to play multiple audio tracks at once. My use case is reading books while listening to music and ambience tracks while reading but you may find another uses for it like using it for ambience in a D&D campaign.
 
+![DATMultiTrackPlayer_g0dPdBFwCO](https://github.com/dogAteTaco/DATMultiTrackPlayer/assets/20733245/ff0c30e4-8912-4454-b061-c446632364f2)
+
+
 # Features
 - You can select a folder with your audio files
 - You can add tracks to your current Multitrack from the scanned files and you can remove them from it too
