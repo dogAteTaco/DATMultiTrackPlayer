@@ -1,0 +1,56 @@
+﻿<Window x:Class="DATMultiTrackPlayer.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewmodel="clr-namespace:DATMultiTrackPlayer.ViewModel"
+        mc:Ignorable="d"
+        Title="DAT Multi Track Player" MinWidth="800" MinHeight="450" Height="450" Width="800" Background="#1f1f1f" Icon="/View/icons8-joox-48.png" SizeChanged="Window_SizeChanged">
+    <Window.DataContext>
+        <viewmodel:MainWindowViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <TabControl Background="#1f1f1f">
+            <TabItem Header="Playing">
+                <StackPanel Margin="10">
+                    <StackPanel Orientation="Horizontal">
+                        <Button Command="{Binding PlayCurrentMultiCommand}" Background="Transparent" BorderThickness="0">
+                            <Image Source="/View/play.png" Height="40" Width="40"></Image></Button>
+                        <Button Command="{Binding PauseCurrentMultiCommand}" Background="Transparent" BorderThickness="0">
+                            <Image Source="pause.png" Height="40" Width="40"></Image>
+                        </Button>
+                        <Button Command="{Binding StopCurrentMultiCommand}" Background="Transparent" BorderThickness="0">
+                            <Image Source="/View/stop.png" Height="40" Width="40"></Image>
+                        </Button>
+                    </StackPanel>
+                    <ScrollViewer MinHeight="300" Width="Auto" Height="{Binding StacksHeight}">
+                        <StackPanel Margin="10" x:Name="CurrentTracksSP">
+                        </StackPanel>
+                    </ScrollViewer>
+                </StackPanel>
+                
+            </TabItem>
+            <TabItem Header="Tracks">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="5">
+                        <Label Foreground="White">Path</Label>
+                        <TextBox x:Name="PathTB" Text="{Binding CurrentPath}" IsReadOnly="True" Width="400"></TextBox>
+                        <Button Margin="5,0,5,0" Width="100" Command="{Binding SelectPathCommand}">Browse</Button>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="5,5,5,15">
+                        <Label Foreground="White">Filter</Label>
+                        <TextBox x:Name="FilerTB" Text="{Binding CurrentFilter}" Width="200"></TextBox>
+                    </StackPanel>
+
+                    <ScrollViewer Width="Auto" Height="{Binding StacksHeight}">
+                        <StackPanel>
+                            <StackPanel x:Name="TracksSP" Margin="10"></StackPanel>
+                        </StackPanel>
+                    </ScrollViewer>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+        
+        
+    </Grid>
+</Window>
