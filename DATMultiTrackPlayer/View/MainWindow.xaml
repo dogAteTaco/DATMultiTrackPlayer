@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewmodel="clr-namespace:DATMultiTrackPlayer.ViewModel"
         mc:Ignorable="d"
-        Title="DAT Multi Track Player" MinWidth="800" MinHeight="450" Height="450" Width="800" Background="#1f1f1f" Icon="/View/icons8-joox-48.png" SizeChanged="Window_SizeChanged">
+        Title="DAT Multi Track Player" MinWidth="800" MinHeight="450" Height="450" Width="800" Background="#1f1f1f" Icon="/View/icons8-joox-48.png" SizeChanged="Window_SizeChanged" WindowStartupLocation="CenterScreen" LayoutUpdated="Window_LayoutUpdated">
     <Window.DataContext>
         <viewmodel:MainWindowViewModel/>
     </Window.DataContext>
@@ -15,15 +15,15 @@
                 <StackPanel Margin="10">
                     <StackPanel Orientation="Horizontal">
                         <Button Command="{Binding PlayCurrentMultiCommand}" Background="Transparent" BorderThickness="0">
-                            <Image Source="/View/play.png" Height="40" Width="40"></Image></Button>
+                            <Image Source="/View/play.png" Height="40" Width="40" Margin="3"></Image></Button>
                         <Button Command="{Binding PauseCurrentMultiCommand}" Background="Transparent" BorderThickness="0">
-                            <Image Source="pause.png" Height="40" Width="40"></Image>
+                            <Image Source="pause.png" Height="40" Width="40" Margin="3"></Image>
                         </Button>
                         <Button Command="{Binding StopCurrentMultiCommand}" Background="Transparent" BorderThickness="0">
-                            <Image Source="/View/stop.png" Height="40" Width="40"></Image>
+                            <Image Source="/View/stop.png" Height="40" Width="40" Margin="3"></Image>
                         </Button>
                     </StackPanel>
-                    <ScrollViewer MinHeight="300" Width="Auto" Height="{Binding StacksHeight}">
+                    <ScrollViewer MinHeight="300" Width="Auto" Height="{Binding StacksHeight}" Background="#2e2e2e" Margin="10">
                         <StackPanel Margin="10" x:Name="CurrentTracksSP">
                         </StackPanel>
                     </ScrollViewer>
@@ -31,22 +31,34 @@
                 
             </TabItem>
             <TabItem Header="Tracks">
-                <StackPanel>
+                <StackPanel Margin="10">
                     <StackPanel Orientation="Horizontal" Margin="5">
                         <Label Foreground="White">Path</Label>
-                        <TextBox x:Name="PathTB" Text="{Binding CurrentPath}" IsReadOnly="True" Width="400"></TextBox>
-                        <Button Margin="5,0,5,0" Width="100" Command="{Binding SelectPathCommand}">Browse</Button>
+                        <TextBox x:Name="PathTB" Text="{Binding CurrentPath}" IsReadOnly="True" Width="400" VerticalContentAlignment="Center"></TextBox>
+                        <Button Margin="5,0,5,0" Width="100" Command="{Binding SelectPathCommand}">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="10"></Setter>
+                                </Style>
+                            </Button.Resources>
+                            Browse</Button>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="5,5,5,15">
                         <Label Foreground="White">Filter</Label>
-                        <TextBox x:Name="FilerTB" Text="{Binding CurrentFilter}" Width="200"></TextBox>
+                        <TextBox x:Name="FilerTB" Text="{Binding CurrentFilter}" Width="200" VerticalContentAlignment="Center"></TextBox>
                     </StackPanel>
 
-                    <ScrollViewer Width="Auto" Height="{Binding StacksHeight}">
+                    <ScrollViewer Width="Auto" Height="{Binding StacksHeight}" MinHeight="100" Background="#2e2e2e">
                         <StackPanel>
                             <StackPanel x:Name="TracksSP" Margin="10"></StackPanel>
                         </StackPanel>
                     </ScrollViewer>
+                    <Button Width="100" HorizontalAlignment="Right" Command="{Binding SaveTagsCommand}">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="10"></Setter>
+                            </Style>
+                        </Button.Resources>Save Tags</Button>
                 </StackPanel>
             </TabItem>
         </TabControl>

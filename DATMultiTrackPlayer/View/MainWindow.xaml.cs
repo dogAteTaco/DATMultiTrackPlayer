@@ -42,7 +42,13 @@ namespace DATMultiTrackPlayer.View
 		private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
 		{
 			if(viewModel!=null)
-				viewModel.StacksHeight = this.Height - 200;
+				viewModel.StacksHeight = this.Height - 230;
+		}
+
+		private void Window_LayoutUpdated(object sender, EventArgs e)
+		{
+			if (viewModel != null)
+				viewModel.StacksHeight = this.ActualHeight - 230;
 		}
 	}
 }

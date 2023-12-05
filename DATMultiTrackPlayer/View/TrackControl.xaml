@@ -6,24 +6,50 @@
              xmlns:local="clr-namespace:DATMultiTrackPlayer"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel  Margin="15">
-        <TextBox x:Name="IdTB" Visibility="Collapsed"></TextBox>
-        <StackPanel Orientation="Horizontal" Height="28" Margin="2">
-            <Label Width="80" Foreground="White">Track Name</Label>
-            <TextBox x:Name="TrackNameTB" MinWidth="200" VerticalContentAlignment="Center"></TextBox>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="160"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <StackPanel Margin="15">
+            <TextBox x:Name="IdTB" Visibility="Collapsed"></TextBox>
+            <StackPanel Orientation="Horizontal" Height="28" Margin="2">
+                <Label Width="80" Foreground="White">Track Name</Label>
+                <TextBox x:Name="TrackNameTB" MinWidth="200" VerticalContentAlignment="Center"></TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Height="28" Margin="2" Visibility="Collapsed">
+                <Label Width="80" Foreground="White">Description</Label>
+                <TextBox x:Name="DescriptionTB" MinWidth="200" VerticalContentAlignment="Center"></TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Height="28" Margin="2" Visibility="Collapsed">
+                <Label Width="80" Foreground="White">Path</Label>
+                <TextBox x:Name="PathTB" MinWidth="200" VerticalContentAlignment="Center" IsReadOnly="True"></TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Height="28" Margin="2">
+                <Label Width="80" Foreground="White">Tags</Label>
+                <TextBox x:Name="TagsTB" MinWidth="200" VerticalContentAlignment="Center"></TextBox>
+            </StackPanel>
+            
         </StackPanel>
-        <StackPanel Orientation="Horizontal" Height="28" Margin="2" Visibility="Collapsed">
-            <Label Width="80" Foreground="White">Description</Label>
-            <TextBox x:Name="DescriptionTB" MinWidth="200" VerticalContentAlignment="Center"></TextBox>
+        <StackPanel Grid.Column="1" Margin="15">
+            <Button x:Name="AddToMultiB" Height="25" Margin="5">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"></Setter>
+                    </Style>
+                </Button.Resources>
+                Add to Multitrack
+            </Button>
+            <Button x:Name="PreviewB" Height="25" Margin="5" Visibility="Collapsed">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"></Setter>
+                    </Style>
+                </Button.Resources>
+                Preview Track
+            </Button>
         </StackPanel>
-        <StackPanel Orientation="Horizontal" Height="28" Margin="2">
-            <Label Width="80" Foreground="White">Path</Label>
-            <TextBox x:Name="PathTB" MinWidth="200" VerticalContentAlignment="Center" IsReadOnly="True"></TextBox>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" Height="28" Margin="2">
-            <Label Width="80" Foreground="White">Tags</Label>
-            <TextBox x:Name="TagsTB" MinWidth="200" VerticalContentAlignment="Center"></TextBox>
-        </StackPanel>
-        <Button x:Name="AddToMultiB" Width="200">Add to Multitrack</Button>
-    </StackPanel>
+        
+    </Grid>
+    
 </UserControl>

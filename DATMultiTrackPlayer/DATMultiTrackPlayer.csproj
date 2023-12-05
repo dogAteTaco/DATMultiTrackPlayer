@@ -7,6 +7,7 @@
     <UseWPF>true</UseWPF>
     <ApplicationIcon>icons8-joox-48.ico</ApplicationIcon>
     <UseWindowsForms>True</UseWindowsForms>
+    <SignAssembly>True</SignAssembly>
   </PropertyGroup>
 
   <ItemGroup>

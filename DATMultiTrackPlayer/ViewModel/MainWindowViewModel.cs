@@ -77,7 +77,7 @@ namespace DATMultiTrackPlayer.ViewModel
 
 		private void AddToMulti(Object sender, EventArgs e)
 		{
-			var control = (TrackControl)((StackPanel)((Button)sender).Parent).Parent;
+			var control = (TrackControl)((Grid)((StackPanel)((Button)sender).Parent).Parent).Parent;
 			int id = Convert.ToInt32(control.IdTB.Text);
 
 			Track track = FoundTracks.Where(t => t.Id == id).First();
@@ -199,6 +199,7 @@ namespace DATMultiTrackPlayer.ViewModel
 
 				FoundTracks = scannedTracks;
 
+				int i = 1;
 				foreach (Track track in scannedTracks)
 				{
 					TrackControl control = new TrackControl();
@@ -209,6 +210,9 @@ namespace DATMultiTrackPlayer.ViewModel
 					control.PathTB.Text = track.Path;
 					control.IdTB.Text = track.Id.ToString();
 					control.AddToMultiB.Click += AddToMulti;
+					if(i%2==0)
+						control.Background = new SolidColorBrush(Color.FromRgb(58, 58, 58));
+					i++;
 					if (AllTrackSP != null)
 						AllTrackSP.Children.Add(control);
 				}
@@ -234,7 +238,6 @@ namespace DATMultiTrackPlayer.ViewModel
 			if (CurrentMultiTrack != null)
 				CurrentMultiTrack.Tracks[index].Volume = volume;
 			MediaPlayers[index].Volume = volume / 100;
-			
 		}
 
 		[RelayCommand]
@@ -292,6 +295,26 @@ namespace DATMultiTrackPlayer.ViewModel
 				CurrentPath = folderBrowserDialog.SelectedPath;
 				LoadTracks();
 				SaveSettings(new Setting(CurrentPath));
+			}
+		}
+
+		[RelayCommand]
+		void SaveTags()
+		{
+			foreach (TrackControl trackControl in AllTrackSP.Children)
+			{
+				string path = trackControl.PathTB.Text;
+
+				Track track = FoundTracks.Where(t => t.Path == path).First();
+				track.Tags = trackControl.TagsTB.Text.Split(",").ToList();
+				string json = JsonSerializer.Serialize(FoundTracks, new JsonSerializerOptions() { WriteIndented = true });
+				TagLib.File f = TagLib.File.Create(trackControl.PathTB.Text);
+				f.Tag.Title = trackControl.TrackNameTB.Text;
+				f.Save();
+				using (StreamWriter writer = new StreamWriter("library.json"))
+				{
+					writer.WriteLine(json);
+				}
 			}
 		}
 	}

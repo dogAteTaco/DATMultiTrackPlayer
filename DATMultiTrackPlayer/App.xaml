@@ -4,6 +4,8 @@
              xmlns:local="clr-namespace:DATMultiTrackPlayer"
              StartupUri="View\MainWindow.xaml">
     <Application.Resources>
-         
+        <Style TargetType="{x:Type Window}">
+            <Setter Property="FontFamily" Value="Corbol" />
+        </Style>
     </Application.Resources>
 </Application>
