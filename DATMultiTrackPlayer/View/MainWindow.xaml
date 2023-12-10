@@ -22,11 +22,22 @@
                         <Button Command="{Binding StopCurrentMultiCommand}" Background="Transparent" BorderThickness="0">
                             <Image Source="/View/stop.png" Height="40" Width="40" Margin="3"></Image>
                         </Button>
+                        <Slider x:Name="MainVolumeSlider" Margin="15,0,0,0" Width="100" VerticalAlignment="Center" Value="{Binding MainVolume}" Maximum="100"></Slider>
                     </StackPanel>
                     <ScrollViewer MinHeight="300" Width="Auto" Height="{Binding StacksHeight}" Background="#2e2e2e" Margin="10">
                         <StackPanel Margin="10" x:Name="CurrentTracksSP">
                         </StackPanel>
                     </ScrollViewer>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Width="{Binding ButtonSize}" Height="{Binding ButtonSize}"></Button>
+                        <Button Width="{Binding ButtonSize}" Height="{Binding ButtonSize}"></Button>
+                        <Button Width="{Binding ButtonSize}" Height="{Binding ButtonSize}"></Button>
+                        <Button Width="{Binding ButtonSize}" Height="{Binding ButtonSize}"></Button>
+                        <Button Width="{Binding ButtonSize}" Height="{Binding ButtonSize}"></Button>
+                        <Button Width="{Binding ButtonSize}" Height="{Binding ButtonSize}"></Button>
+                        <Button Width="{Binding ButtonSize}" Height="{Binding ButtonSize}"></Button>
+                        <Button Width="{Binding ButtonSize}" Height="{Binding ButtonSize}"></Button>
+                    </StackPanel>
                 </StackPanel>
                 
             </TabItem>
@@ -42,6 +53,14 @@
                                 </Style>
                             </Button.Resources>
                             Browse</Button>
+                        <Button Margin="5,0,5,0" Width="100" Command="{Binding RefreshLibraryCommand}">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="10"></Setter>
+                                </Style>
+                            </Button.Resources>
+                            Rescan
+                        </Button>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="5,5,5,15">
                         <Label Foreground="White">Filter</Label>
@@ -59,6 +78,7 @@
                                 <Setter Property="CornerRadius" Value="10"></Setter>
                             </Style>
                         </Button.Resources>Save Tags</Button>
+                    
                 </StackPanel>
             </TabItem>
         </TabControl>

@@ -45,11 +45,20 @@ namespace DATMultiTrackPlayer.ViewModel
 
 		[ObservableProperty]
 		double stacksHeight;
+
+		[ObservableProperty]
+		double buttonSize;
+
+		[ObservableProperty]
+		int mainVolume;
+
 		public async Task InitAsync()
 		{
 			SaveSettings(LoadSettings());
 			if(CurrentPath.Trim()!="")
 				LoadTracks();
+			ButtonSize = 50;
+			MainVolume = 100;
 		}
 
 		private void SaveSettings(Setting settings)
@@ -86,7 +95,7 @@ namespace DATMultiTrackPlayer.ViewModel
 			{
 				TrackPlayerControl trackPlayerControl = new TrackPlayerControl();
 				trackPlayerControl.TrackNameTB.Text = track.Name;
-				trackPlayerControl.VolumeSlider.Value = 100;
+				trackPlayerControl.VolumeSlider.Value = 100*MainVolume/100;
 				trackPlayerControl.VolumeSlider.ValueChanged += VolumeSlider_ValueChanged;
 				trackPlayerControl.DeleteB.Click += DeleteTrackFromMulti;
 				CurrentMultiTrack.Tracks.Add(track);
@@ -185,44 +194,54 @@ namespace DATMultiTrackPlayer.ViewModel
 			{
 				CurrentFilter = "";
 				MediaPlayers = new List<MediaPlayer>();
-				var existingTracks = ReadExistingTracks();
-				var scannedTracks = ScanTracks();
+				RefreshLibrary();
+			}
+		}
 
-				foreach (var scannedtrack in scannedTracks)
+		[RelayCommand]
+		void RefreshLibrary()
+		{
+			var existingTracks = ReadExistingTracks();
+			var scannedTracks = ScanTracks();
+
+			foreach (var scannedtrack in scannedTracks)
+			{
+				var found = existingTracks.Where(t => t.Path == scannedtrack.Path).ToList();
+				if (found.Count > 0)
 				{
-					var found = existingTracks.Where(t => t.Path == scannedtrack.Path).ToList();
-					if (found.Count > 0)
-					{
-						scannedtrack.Tags = found.First().Tags;
-					}
+					scannedtrack.Tags = found.First().Tags;
 				}
+			}
 
-				FoundTracks = scannedTracks;
-
-				int i = 1;
-				foreach (Track track in scannedTracks)
+			FoundTracks = scannedTracks;
+			AllTrackSP.Children.Clear();
+			int i = 1;
+			foreach (Track track in scannedTracks)
+			{
+				TrackControl control = new TrackControl();
+				control.TrackNameTB.Text = track.Name;
+				control.DescriptionTB.Text = track.Description;
+				control.TagsTB.Text = track.TagsToString();
+				control.ToolTip = track.tooltip;
+				control.PathTB.Text = track.Path;
+				control.IdTB.Text = track.Id.ToString();
+				control.AddToMultiB.Click += AddToMulti;
+				if (i % 2 == 0)
+					control.Background = new SolidColorBrush(Color.FromRgb(58, 58, 58));
+				i++;
+				if (AllTrackSP != null)
 				{
-					TrackControl control = new TrackControl();
-					control.TrackNameTB.Text = track.Name;
-					control.DescriptionTB.Text = track.Description;
-					control.TagsTB.Text = track.TagsToString();
-					control.ToolTip = track.tooltip;
-					control.PathTB.Text = track.Path;
-					control.IdTB.Text = track.Id.ToString();
-					control.AddToMultiB.Click += AddToMulti;
-					if(i%2==0)
-						control.Background = new SolidColorBrush(Color.FromRgb(58, 58, 58));
-					i++;
-					if (AllTrackSP != null)
-						AllTrackSP.Children.Add(control);
+					
+					AllTrackSP.Children.Add(control);
 				}
+					
+			}
 
-				string json = JsonSerializer.Serialize(scannedTracks, new JsonSerializerOptions() { WriteIndented = true });
+			string json = JsonSerializer.Serialize(scannedTracks, new JsonSerializerOptions() { WriteIndented = true });
 
-				using (StreamWriter writer = new StreamWriter("library.json"))
-				{
-					writer.WriteLine(json);
-				}
+			using (StreamWriter writer = new StreamWriter("library.json"))
+			{
+				writer.WriteLine(json);
 			}
 		}
 		private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -237,7 +256,7 @@ namespace DATMultiTrackPlayer.ViewModel
 			int index = LoadedTrackSP.Children.IndexOf(controlClicked);
 			if (CurrentMultiTrack != null)
 				CurrentMultiTrack.Tracks[index].Volume = volume;
-			MediaPlayers[index].Volume = volume / 100;
+			MediaPlayers[index].Volume = volume / 100 * MainVolume /100;
 		}
 
 		[RelayCommand]
@@ -249,6 +268,13 @@ namespace DATMultiTrackPlayer.ViewModel
 			}
 		}
 
+		public void ChangeVolume(Object sender, EventArgs e)
+		{
+			for (int i = 0; i < MediaPlayers.Count; i++)
+			{
+				MediaPlayers[i].Volume = CurrentMultiTrack.Tracks[i].Volume / 100 * MainVolume / 100;
+			}
+		}
 		[RelayCommand]
 		public void PauseCurrentMulti()
 		{
@@ -310,7 +336,14 @@ namespace DATMultiTrackPlayer.ViewModel
 				string json = JsonSerializer.Serialize(FoundTracks, new JsonSerializerOptions() { WriteIndented = true });
 				TagLib.File f = TagLib.File.Create(trackControl.PathTB.Text);
 				f.Tag.Title = trackControl.TrackNameTB.Text;
-				f.Save();
+				try
+				{
+					f.Save();
+				}
+				catch(Exception ex)
+				{
+
+				}
 				using (StreamWriter writer = new StreamWriter("library.json"))
 				{
 					writer.WriteLine(json);

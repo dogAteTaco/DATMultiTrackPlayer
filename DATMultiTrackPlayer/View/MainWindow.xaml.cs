@@ -37,6 +37,7 @@ namespace DATMultiTrackPlayer.View
 			this.Window_SizeChanged(null,null);
 			await viewModel.InitAsync();
 			this.FilerTB.TextChanged += viewModel.FilterChanged;
+			this.MainVolumeSlider.ValueChanged += viewModel.ChangeVolume;
 		}
 
 		private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
